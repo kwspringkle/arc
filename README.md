@@ -29,28 +29,30 @@
     ```
 #### 3. Set up the original repository as a remote
 Add the original repository as a remote named 'upstream':
-    ```bash
+    ```sh
     git remote add upstream https://github.com/kwspringkle/arc.git
-Verify the new remote 'upstream':
-    ```bash
-    git remote -v
-#### 4. Make changes and commit
     ```
+Verify the new remote 'upstream':
+    ```sh
+    git remote -v
+    ```
+#### 4. Make changes and commit
+    ```sh
     git add .
     git commit -m "Description"
     ```
 #### 5. Sync with the original repository
 Fetch the latest changes:
-    ```
+    ```sh
     git fetch upstream
     ```
 Merge the latest changes to your branch:
-    ```
+    ```sh
     git merge upstream/main
     ```
 #### 6. Push your changes
 Push your changes to the forked repository:
-    ```
+    ```sh
     git push origin your-branch
     ```
 #### 7. Pull Request
@@ -73,41 +75,41 @@ After commit to your forked repository, create a pull request. Once your pull re
 #### 2. フォークをクローンする
 
 1. **フォークしたリポジトリをローカルマシンにクローンします：**
-    ```
+    ```sh
     git clone your-cloned-repo-link
     ```
 
 2. **クローンしたリポジトリに移動します：**
-    ```
+    ```sh
     cd Arc
     ```
 
 #### 3. 元のリポジトリをリモートとして設定する
 元のリポジトリを'upstream'という名前のリモートとして追加します：
-     ```
+     ```sh
     git remote add upstream https://github.com/kwspringkle/arc.git
     ```
 新しいリモート'upstream'を確認します：
-    ```
+    ```sh
     git remote -v
-
-#### 4. 変更を加えてコミットする
     ```
+#### 4. 変更を加えてコミットする
+    ```sh
     git add .
     git commit -m "Description"
     ```
 #### 5. 元のリポジトリと同期する
 最新の変更をフェッチします：
-    ```
+    ```sh
     git fetch upstream
     ```
 最新の変更をあなたのブランチにマージします：
-    ```
+    ```sh
     git merge upstream/main
     ```
 #### 6.変更をプッシュする
 変更をフォークしたリポジトリにプッシュします：  
-    ```
+    ```sh
     git push origin your-branch
     ```
 #### 7. プルリクエスト
