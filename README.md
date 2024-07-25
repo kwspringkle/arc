@@ -38,24 +38,24 @@ Verify the new remote 'upstream':
     ```
 
 #### 4. Make changes and commit
-    ```sh
-    git add .
-    git commit -m "Description"
-    ```
+   ```sh
+   git add .
+   git commit -m "Description"
+   ```
 #### 5. Sync with the original repository
 Fetch the latest changes:
    ```sh
    git fetch upstrean
    ```
 Merge the latest changes to your branch:
-     ```sh
+   ```sh
    git merge upstream/main
    ```
 #### 6. Push your changes
 Push your changes to the forked repository:
-    ```sh
-    git push origin your-branch
-    ```
+   ```sh
+   git push origin your-branch
+   ```
 #### 7. Pull Request
 After commit to your forked repository, create a pull request. Once your pull request is approved, it will be merged into the main branch of the original repository
 
@@ -87,7 +87,7 @@ After commit to your forked repository, create a pull request. Once your pull re
 
 #### 3. 元のリポジトリをリモートとして設定する
 元のリポジトリを'upstream'という名前のリモートとして追加します：
-     ```sh
+    ```sh
     git remote add upstream https://github.com/kwspringkle/arc.git
     ```
 新しいリモート'upstream'を確認します：
