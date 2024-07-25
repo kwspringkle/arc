@@ -36,6 +36,7 @@ Verify the new remote 'upstream':
     ```sh
     git remote -v
     ```
+
 #### 4. Make changes and commit
     ```sh
     git add .
