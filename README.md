@@ -44,13 +44,13 @@ Verify the new remote 'upstream':
     ```
 #### 5. Sync with the original repository
 Fetch the latest changes:
-    ```sh
-    git fetch upstream
-    ```
+   ```sh
+   git fetch upstrean
+   ```
 Merge the latest changes to your branch:
-    ```sh
-    git merge upstream/main
-    ```
+     ```sh
+   git merge upstream/main
+   ```
 #### 6. Push your changes
 Push your changes to the forked repository:
     ```sh
