@@ -28,10 +28,10 @@
     cd Arc
     ```
 #### 3. Set up the original repository as a remote
-Add the original repository as a remote named 'upstream':
-    ```sh
-    git remote add upstream https://github.com/kwspringkle/arc.git
-    ```
+Add the original repository as a remote named 'upstream': 
+   ```sh
+   git remote add upstream https://github.com/kwspringkle/arc.git
+   ```
 Verify the new remote 'upstream':
     ```sh
     git remote -v
