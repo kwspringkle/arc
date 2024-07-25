@@ -20,11 +20,13 @@
 #### 2. Clone Your Fork
 
 1. **Clone the forked repository to your local machine:**
-   ```bash
+   ```sh
    git clone your-cloned-repo-link
+   ```
 2. **Navigate into the cloned repository:**
-    ```bash
+    ```sh
     cd Arc
+    ```
 #### 3. Set up the original repository as a remote
 Add the original repository as a remote named 'upstream':
     ```bash
