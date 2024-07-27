@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Twitter Clone</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <h1>My Twitter Clone</h1>
+    <form method="get" action="">
+        {{ search_form.as_p }}
+        <button type="submit">Search</button>
+        <a href="{% url 'index' %}"><button type="button">Reset</button></a>
+    </form>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Post</button>
+    </form>
+    <ul>
+        {% for post in posts %}
+            <li>
+                {% if post.content %}
+                    {{ post.content }}
+                {% endif %}
+                {% if post.image %}
+                    <img src="{{ post.image.url }}" alt="Image">
+                {% endif %}
+                {% if post.video %}
+                    <video controls>
+                        <source src="{{ post.video.url }}" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                {% endif %}
+                - {{ post.created_at }}
+                <form method="post" action="{% url 'delete_post' post.id %}" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit">Delete</button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
