@@ -9,4 +9,5 @@ urlpatterns = [
     path('login/', views.render_login, name='login_page'),
     path('sys/login/', views.custom_login_view, name='login'),
     path('sys/logout/', views.logout_view, name='logout'),
+    path('signup/', views.SignUpView.as_view(), name="signup"),
 ]
