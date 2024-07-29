@@ -29,9 +29,11 @@ def custom_login_view(request):
 def logout_view (request):
     return redirect('log:login_page')
 
-@login_required
 def render_home(request):
     return render(request, 'home.html')
+@login_required
+def render_main(request):
+    return render(request, 'index.html')
 
 def render_login(request):
     logout(request)
@@ -39,7 +41,7 @@ def render_login(request):
 
 class SignUpView(CreateView):
     form_class = SignUpForm
-    template_name = "signup.html"
+    template_name = "register.html"
     success_url = reverse_lazy("log:home_page")
 
     def form_valid(self, form):
