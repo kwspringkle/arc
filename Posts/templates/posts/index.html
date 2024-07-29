@@ -1,16 +1,19 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>My Twitter Clone</title>
+    <title>Posts</title>
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
 </head>
 <body>
-    <h1>My Twitter Clone</h1>
+    <h1>Posts & Views</h1>
+    <nav>
+        <a href="{% url 'log:home_page' %}">Home</a>
+    </nav>
     <form method="get" action="">
         {{ search_form.as_p }}
         <button type="submit">Search</button>
-        <a href="{% url 'index' %}"><button type="button">Reset</button></a>
+        <a href="{% url 'posts:index' %}"><button type="button">Reset</button></a>
     </form>
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
@@ -33,7 +36,7 @@
                     </video>
                 {% endif %}
                 - {{ post.created_at }}
-                <form method="post" action="{% url 'delete_post' post.id %}" style="display:inline;">
+                <form method="post" action="{% url 'posts:delete_post' post.id %}" style="display:inline;">
                     {% csrf_token %}
                     <button type="submit">Delete</button>
                 </form>

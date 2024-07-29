@@ -13,7 +13,7 @@ def index(request):
         form = PostForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            return redirect('index')
+            return redirect('posts:index')
     else:
         form = PostForm()
     return render(request, 'posts/index.html', {'posts': posts, 'form': form, 'search_form': search_form})
@@ -22,5 +22,5 @@ def delete_post(request, post_id):
     post = get_object_or_404(Post, id=post_id)
     if request.method == "POST":
         post.delete()
-        return redirect('index')
+        return redirect('posts:index')
     return render(request, 'posts/confirm_delete.html', {'post': post})
