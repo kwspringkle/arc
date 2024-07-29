@@ -37,6 +37,14 @@ def render_login(request):
     logout(request)
     return render(request, 'login.html')
 
+@login_required
+def render_chat(request):
+    return render(request, 'chat.html')
+
+@login_required
+def render_post(request):
+    return render(request, 'post.html')
+
 class SignUpView(CreateView):
     form_class = SignUpForm
     template_name = "signup.html"
