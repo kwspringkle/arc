@@ -148,8 +148,22 @@ def suggest(request):
 
     group_chat_suggestions = [{'id': chat.id, 'name': chat.name} for chat in suggested_group_chat]
     private_chat_suggestions = [{'id': chat.id, 'name': chat.name} for chat in suggested_private_chat]
-   
+
     return JsonResponse({
         'group_chats': group_chat_suggestions,
         'direct_chats': private_chat_suggestions
     })
+
+@login_required
+def group_chat_list(request):
+    rooms = ChatRoom.objects.filter(members=request.user, is_group=True, is_deleted=False)
+    return render(request, 'chat.html', {'rooms': rooms})
+
+@login_required
+def delete_message(request, message_id):
+    message = get_object_or_404(Message, id=message_id, sender=request.user)
+    if request.method == 'POST':
+        message.is_deleted = True
+        message.save()
+        return JsonResponse({'status': 'success'})
+    return JsonResponse({'status': 'failed', 'error': 'Invalid request'})

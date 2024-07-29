@@ -10,6 +10,7 @@ class ChatRoom(models.Model):
     name = models.CharField(max_length=255)
     is_group = models.BooleanField(default=False)
     members = models.ManyToManyField(User, related_name='chat_rooms')
+    is_deleted = models.BooleanField(default=False)
     def __str__(self):
         return self.name
 
@@ -20,6 +21,7 @@ class Message(models.Model):
     file = models.FileField(upload_to='chat_files/', null=True, blank=True)
     timestamp = models.DateTimeField(auto_now_add=True)
     reactions = GenericRelation('Reaction')
+    is_deleted = models.BooleanField(default=False)
     
     def __str__(self):
         return f"{self.sender} at {self.timestamp}: {self.content[:50]}"

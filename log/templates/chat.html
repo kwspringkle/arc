@@ -1,8 +1,10 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="{% static 'js/chat.js' %}"></script>
     <title>chat</title>
 </head>
 <body>
@@ -11,6 +13,78 @@
     <h1><a href="{% url "log:logout" %}">logout</a></h1>
     <h1><a href="{% url "log:home_page" %}">home page</a></h1>
     <h1><a href="{% url "log:post_page" %}">post page</a></h1>
-    <h1><a href="{% url "log:chat_page" %}">chat page</a></h1>
+    <h1><a href="{% url "log:chat_page" %}">chat page</a></h1><div id="create-chat-room-container">
+        
+        <h2>Chat Rooms</h2>
+        <h2>Create a Chat Room</h2>
+        
+        <!-- Group Chat Creation Form -->
+        <div id="create-group-chat">
+            <h3>Create Group Chat</h3>
+            <form method="post" action="{% url 'create_group_chat' %}">
+                {% csrf_token %}
+                <label for="group-name">Group Name:</label>
+                <input type="text" id="group-name" name="name" required>
+                <button type="submit">Create Group Chat</button>
+            </form>
+        </div>
+
+        <!-- Private Chat Creation Form -->
+        <div id="create-private-chat">
+            <h3>Create Private Chat</h3>
+            <form method="post" action="{% url 'create_private_chat' %}">
+                {% csrf_token %}
+                <label for="private-chat-name">Private Chat Name:</label>
+                <input type="text" id="private-chat-name" name="name" required>
+                <button type="submit">Create Private Chat</button>
+            </form>
+        </div>
+    </div>
+
+
+    <div id="chat-container">
+        <div id="chat-rooms">
+            <ul>
+                {% for room in rooms %}
+                    <li>
+                        <a href="{% url 'chat_room' room.id %}">{{ room.name }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div id="chat-room-container">
+            <!-- チャットルームのコンテンツ -->
+            <div class="chat-room">
+                {% if not room.is_deleted %}
+                    <h2>{{ room.name }}</h2>
+                    <!-- メッセージリスト -->
+                    <div class="messages">
+                        {% for message in messages %}
+                            <div class="message" id="message-{{ message.id }}">
+                                {% if not message.is_deleted %}
+                                    <p><strong>{{ message.sender.username }}:</strong> {{ message.content }}</p>
+                                    {% if message.file %}
+                                        <p><a href="{{ message.file.url }}">Download File</a></p>
+                                    {% endif %}
+                                    <p>{{ message.timestamp }}</p>
+                                    <button onclick="deleteMessage({{ message.id }})">Delete</button>
+                                {% else %}
+                                    <p>This message has been deleted.</p>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <!-- メッセージ送信フォーム -->
+                    <form id="send-message-form" onsubmit="event.preventDefault(); sendMessage({{ room.id }}, document.getElementById('message-content').value, document.getElementById('message-file').files[0]);">
+                        <textarea id="message-content" required></textarea>
+                        <input type="file" id="message-file">
+                        <button type="submit">Send Message</button>
+                    </form>
+                {% else %}
+                    <p>This chat room has been deleted.</p>
+                {% endif %}
+            </div>
+        </div>
 </body>
 </html>
