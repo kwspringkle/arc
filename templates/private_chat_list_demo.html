@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Private Chats</title>
+</head>
+<body>
+    <h1>Private Chats</h1>
+    <form method="GET" action="{% url 'search_private_chat' %}">
+        <input type="text" name="q" value="{{ search_query }}" placeholder="Search Private Chats">
+        <button type="submit">Search</button>
+    </form>
+    <ul>
+        {% for chat in private_chat_room %}
+            <li>{{ chat.member1 }} and {{ chat.member2 }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
