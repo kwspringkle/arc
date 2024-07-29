@@ -2,6 +2,11 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
+from django.http.response import HttpResponseRedirect
+from django.views.generic import CreateView
+from django.urls import reverse_lazy
+from .forms import SignUpForm
+
 
 def custom_login_view(request):
     if request.method == 'POST':
@@ -31,3 +36,14 @@ def render_home(request):
 def render_login(request):
     logout(request)
     return render(request, 'login.html')
+
+class SignUpView(CreateView):
+    form_class = SignUpForm
+    template_name = "signup.html"
+    success_url = reverse_lazy("log:home_page")
+
+    def form_valid(self, form):
+        user = form.save()
+        login(self.request, user)
+        self.object = user
+        return HttpResponseRedirect(self.get_success_url())
