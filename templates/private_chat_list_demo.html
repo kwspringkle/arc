@@ -12,7 +12,7 @@
     </form>
     <ul>
         {% for chat in private_chat_room %}
-            <li>{{ chat.member1 }} and {{ chat.member2 }}</li>
+            <a href ="{% url 'private_chat_messages' chat.id %}"><li>{{ chat.member1 }}, {{ chat.member2 }}</li></a>
         {% endfor %}
     </ul>
 </body>
