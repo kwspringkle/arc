@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>login</title>
+</head>
+<body>
+    <div class="row">
+        <div class="col-sm-6">
+            <br>
+            <h1>Sign up page</h1>
+            <p><a href="{% url 'log:home_page' %}">login</a></p>
+            <form method="POST">
+                {% csrf_token %}
+                {{ form.non_field_errors }}
+                {% for field in form %}
+                    {{ field.label }}
+                    {{ field }}
+                    {{ field.errors }}
+                    <br>
+                {% endfor %}
+                <button type="submit">register</button>
+            </form>
+        </div>
+    </div>
+    </body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Group Chat: {{ chat_room.name }}</title>
+</head>
+<body>
+    <h1>Group Chat: {{ chat_room.name }}</h1>
+    
+    <div id="messages">
+        {% for message in messages %}
+            <div class="message">
+                <strong>{{ message.sender.username }}:</strong>
+                <p>{{ message.content }}</p>
+                {% if message.img_file %}
+                    <img src="{{ message.img_file.url }}" alt="Uploaded image" style="max-width: 200px;">
+                {% endif %}
+                <small>{{ message.timestamp }}</small>
+
+                <div class="replies">
+                    {% for reply in replies %}
+                        {% if reply.message == message %}
+                            <div class="reply">
+                                <strong>{{ reply.sender.username }}:</strong>
+                                <p>{{ reply.content }}</p>
+                                {% if reply.img_file %}
+                                    <img src="{{ reply.img_file.url }}" alt="Uploaded image" style="max-width: 150px;">
+                                {% endif %}
+                                <small>{{ reply.timestamp }}</small>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+
+                <form action="{% url 'reply_group_message' chat_room.id message.id %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <textarea name="content" rows="2" required></textarea>
+                    <input type="file" name="img_file" accept="image/*">
+                    <button type="submit">Reply</button>
+                </form>
+            </div>
+        {% empty %}
+            <p>No messages yet.</p>
+        {% endfor %}
+    </div>
+
+    <form action="{% url 'send_group_message' chat_room.id %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <textarea name="content" rows="3" required></textarea>
+        <input type="file" name="img_file" accept="image/*">
+        <button type="submit">Send</button>
+    </form>
+
+    <a href="{% url 'group_chat_list' %}">Back to Group Chat List</a>
+</body>
+</html>

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Group Chats</title>
+</head>
+<body>
+    <h1>Group Chats</h1>
+    <form method="GET" action="{% url 'search_group_chat' %}">
+        <input type="text" name="q" value="{{ search_query }}" placeholder="Search Group Chats">
+        <button type="submit">Search</button>
+    </form>
+    <ul>
+        {% for chat in group_chat %}
+            <a href ="{% url 'group_chat_messages' chat.id %}"><li>{{ chat.name }}</li></a>
+        {% endfor %}
+    </ul>
+</body>
+</html>
