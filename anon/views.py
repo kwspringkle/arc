@@ -19,7 +19,7 @@ def add_anon_message(request, pk):
             var.user = get_user
             var.save()
             messages.info(request, f'Sent anonymous message to {get_user.first_name}')
-            return redirect('home')
+            return redirect('anonymous')
         else:
             messages.warning(request, 'Something went wrong')
             return redirect('add-anon-message')

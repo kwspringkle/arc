@@ -1,14 +1,19 @@
-from django.urls import path, include
-from . import views 
+from django.urls import path
+from django.shortcuts import redirect
+from .views import PrivateChatList, GroupChatList, SearchPrivateChat, SearchGroupChat, create_group_chat, create_private_chat, show_group_messages, show_private_messages
+from .views import send_group_message, send_private_message, reply_group_message
 
 urlpatterns = [
-    path('group_chats/', views.group_chat_list, name='group_chat_list'),
-    path('private_chats/', views.private_chat_list, name='private_chat_list'),
-    path('chat_room/<int:room_id>/', views.chat_room, name='chat_room'),
-    path('create_group_chat/', views.create_group_chat, name='create_group_chat'),
-    path('add_member/<int:room_id>/', views.add_member, name='add_member'),
-    path('search_users/', views.search_users, name='search_users'),
-    path('create_private_chat/', views.create_private_chat, name='create_private_chat'),
-    path('get_messages/<int:room_id>/', views.get_messages, name='get_messages'),
-    path('suggest/', views.suggest, name='suggest'),
+    path('', lambda request: redirect('private_chat_list'), name='chat_home'),
+    path('private/', PrivateChatList, name='private_chat_list'),
+    path('group/', GroupChatList, name='group_chat_list'),
+    path('search/private/', SearchPrivateChat, name='search_private_chat'),
+    path('search/group/', SearchGroupChat, name='search_group_chat'),
+    path('create/group/', create_group_chat, name='create_group_chat'),
+    path('create/private/', create_private_chat, name='create_private_chat'),
+    path('private-chat/<int:chat_id>/', show_private_messages, name='private_chat_messages'),
+    path('group-chat/<int:chat_id>/', show_group_messages, name='group_chat_messages'),
+    path('private-chat/<int:chat_id>/send/', send_private_message, name='send_private_message'),
+    path('group-chat/<int:chat_id>/send/', send_group_message, name='send_group_message'),
+    path('group-chat/<int:chat_id>/reply/<int:message_id>/', reply_group_message, name='reply_group_message'),
 ]

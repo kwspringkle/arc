@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Private Chat with {{ chat_room.member2.username }}</title>
+</head>
+<body>
+    <h1>Private Chat with {{ chat_room.member2.username }}</h1>
+    
+    <div id="messages">
+        {% for message in messages %}
+            <div class="message">
+                <strong>{{ message.sender.username }}:</strong>
+                <p>{{ message.content }}</p>
+                {% if message.img_file %}
+                    <img src="{{ message.img_file.url }}" alt="Uploaded image" style="max-width: 200px;">
+                {% endif %}
+                <small>{{ message.timestamp }}</small>
+            </div>
+        {% empty %}
+            <p>No messages yet.</p>
+        {% endfor %}
+    </div>
+
+    <form action="{% url 'send_private_message' chat_room.id %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <textarea name="content" rows="3" required></textarea>
+        <input type="file" name="img_file" accept="image/*">
+        <button type="submit">Send</button>
+    </form>
+
+    <a href="{% url 'private_chat_list' %}">Back to Chat List</a>
+</body>
+</html>
