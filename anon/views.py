@@ -1,5 +1,6 @@
 from django.shortcuts import render,redirect
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from .form import AddAnonMessageForm
 from .models import AnonMessage
@@ -8,6 +9,7 @@ from .models import AnonMessage
 def home(request):
     return render(request, 'home.html')
 
+@login_required
 def add_anon_message(request, pk):
     get_user = User.objects.get(pk=pk)
     if request.method == 'POST':
