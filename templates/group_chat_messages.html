@@ -4,6 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Group Chat: {{ chat_room.name }}</title>
+    <style>
+        .message {
+            margin-bottom: 20px;
+        }
+
+        .reply {
+            margin-left: 40px; /* Indent replies */
+            border-left: 2px solid #ddd;
+            padding-left: 10px;
+            margin-top: 10px;
+        }
+
+        .reply-form {
+            margin-left: 40px; /* Indent the reply form as well */
+        }
+    </style>
 </head>
 <body>
     <h1>Group Chat: {{ chat_room.name }}</h1>
@@ -33,7 +49,7 @@
                     {% endfor %}
                 </div>
 
-                <form action="{% url 'reply_group_message' chat_room.id message.id %}" method="post" enctype="multipart/form-data">
+                <form class="reply-form" action="{% url 'reply_group_message' chat_room.id message.id %}" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     <textarea name="content" rows="2" required></textarea>
                     <input type="file" name="img_file" accept="image/*">
@@ -53,5 +69,6 @@
     </form>
 
     <a href="{% url 'group_chat_list' %}">Back to Group Chat List</a>
+    <a href="/home">Back to home</a>
 </body>
 </html>
