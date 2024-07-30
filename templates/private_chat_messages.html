@@ -3,34 +3,178 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{chat_room.member1.username}},{{ chat_room.member2.username }} private chat</title>
+    <title>{{ chat_room.member1.username }}, {{ chat_room.member2.username }} Private Chat</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            background: linear-gradient(to right, #a86dff, #ff66b2);
+            color: #000;
+            padding-top: 56px; /* Adjust for navbar height */
+        }
+
+        .container {
+            flex: 1;
+            padding: 20px;
+        }
+
+        .message-list {
+            max-height: calc(100vh - 200px); /* Adjust as needed */
+            overflow-y: auto;
+            padding: 10px;
+            background-color: #fff;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .message strong {
+            color: #6a1b9a;
+            margin-right: 5px;
+        }
+
+        .message p {
+            margin-bottom: 5px;
+        }
+
+        .message small {
+            color: #aaa;
+            font-size: 12px;
+            display: block;
+            margin-top: 5px;
+        }
+
+        .reply-form {
+            margin-top: 10px;
+        }
+
+        .reply-form textarea {
+            width: calc(100% - 100px);
+            padding: 8px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            resize: vertical;
+        }
+
+        .reply-form input[type="file"] {
+            margin-left: 10px;
+            font-size: 14px;
+        }
+
+        .reply-form button[type="submit"] {
+            background-color: #6a1b9a;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        .reply-form button[type="submit"]:hover {
+            background-color: #8e24aa;
+        }
+
+        .back-link {
+            margin-top: 20px;
+            display: block;
+            color: #fff;
+            text-decoration: none;
+            background-color: rgba(0, 0, 0, 0.1);
+            padding: 10px 15px;
+            border-radius: 6px;
+            width: fit-content;
+        }
+
+        .back-link:hover {
+            background-color: rgba(0, 0, 0, 0.2);
+        }
+
+        .reply-form button[type="submit"] {
+        background-color: #6a1b9a;
+        color: #fff;
+        border: none;
+        padding: 10px 20px; /* Adjust padding as needed */
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 16px; /* Adjust font size as needed */
+        transition: background-color 0.3s ease;
+    }
+
+    .reply-form button[type="submit"]:hover {
+        background-color: #8e24aa;
+    }
+    </style>
 </head>
 <body>
-    <h1>Private chat: {{chat_room.member1.username}}, {{ chat_room.member2.username }}</h1>
-    
-    <div id="messages">
-        {% for message in messages %}
-            <div class="message">
-                <strong>{{ message.sender.username }}:</strong>
-                <p>{{ message.content }}</p>
-                {% if message.img_file %}
-                    <img src="{{ message.img_file.url }}" alt="Uploaded image" style="max-width: 200px;">
-                {% endif %}
-                <small>{{ message.timestamp }}</small>
-            </div>
-        {% empty %}
-            <p>No messages yet.</p>
-        {% endfor %}
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+        <a class="navbar-brand" href="/home">ARC</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item"><a class="nav-link" href="/home">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="/sys/logout">Logout</a></li>
+                <li class="nav-item"><a class="nav-link" href="/chat/group">Group Chat</a></li>
+                <li class="nav-item"><a class="nav-link" href="/chat/private">Private Chat</a></li>
+                <li class="nav-item"><a class="nav-link" href="/posts">Post</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Profile</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1>Private Chat: {{ chat_room.member1.username }}, {{ chat_room.member2.username }}</h1>
+        
+        <div class="message-list">
+            {% for message in messages %}
+                <div class="message">
+                    <strong>{{ message.sender.username }}</strong>
+                    <p>{{ message.content }}</p>
+                    {% if message.img_file %}
+                        <img src="{{ message.img_file.url }}" alt="Uploaded image" style="max-width: 100%;">
+                    {% endif %}
+                    <small>{{ message.timestamp }}</small>
+                </div>
+            {% empty %}
+                <p>No messages yet.</p>
+            {% endfor %}
+        </div>
+
+        <form class="reply-form" action="{% url 'send_private_message' chat_room.id %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <textarea name="content" rows="3"></textarea>
+            <input type="file" name="img_file" accept="image/*">
+            <button type="submit">Send</button>
+        </form>
+
+        <a class="back-link" href="{% url 'private_chat_list' %}">Back to Chat List</a>
     </div>
 
-    <form action="{% url 'send_private_message' chat_room.id %}" method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        <textarea name="content" rows="3" required></textarea>
-        <input type="file" name="img_file" accept="image/*">
-        <button type="submit">Send</button>
-    </form>
+    <footer class="bg-light text-center">
+        <div class="container">
+            <p>&copy; All rights reserved.</p>
+        </div>
+    </footer>
 
-    <a href="{% url 'private_chat_list' %}">Back to Chat List</a>
-    <a href="/home">Back to Home</a>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
