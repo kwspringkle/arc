@@ -41,14 +41,22 @@ def SearchGroupChat(request):
 def create_group_chat(request):
     if request.method == 'POST':
         group_name = request.POST.get('group_name')
-        member_usernames = request.POST.getlist('members')
-        members = User.objects.filter(username__in=member_usernames)
+        member_usernames = request.POST.get('members', '').split(',')
+        members = [username.strip() for username in member_usernames]
 
-        if members:
-            group_chat = GroupChatRoom.objects.create(name=group_name)
-            group_chat.members.add(*members)
-            group_chat.members.add(request.user)  # Add the creator as a member
-            return redirect('group_chat_list')
+        if group_name and member_usernames:
+            members = User.objects.filter(username__in=member_usernames)
+            if members.exists():
+                group_chat = GroupChatRoom.objects.create(name=group_name)
+                group_chat.members.add(*members)
+                group_chat.members.add(request.user)
+                return redirect('group_chat_list')
+            else:
+                error_message = "No users found with the given usernames."
+        else:
+            error_message = "Group name and members are required."
+        return render(request, 'create_group_chat_demo.html', {'error': error_message})
+    
     return render(request, 'create_group_chat_demo.html')
 
 def create_private_chat(request):
