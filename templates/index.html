@@ -8,14 +8,27 @@
 <title>Home Page</title>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <style>
-  body {
-    padding-top: 56px;
-    font-family: Arial, sans-serif;
-    background-color: #e9ecef;
-  }
-  footer {
-    padding: 3rem 0;
-  }
+  html, body {
+        height: 100%;
+        margin: 0;
+      }
+
+      body {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .container {
+        flex: 1;
+      }
+
+      footer {
+        margin-top: auto;
+        background-color: #ffffff; 
+        border-top: 1px solid #ddd; 
+        padding: 3rem 0;
+        text-align: center;
+      }
 </style>
 </head>
 <body>
@@ -37,7 +50,7 @@
             <a class="dropdown-item" href="/chat/private">Private Chat</a>
           </div>
         </li>
-        <li class="nav-item"><a class="nav-link" href="/post">Post</a></li>
+        <li class="nav-item"><a class="nav-link" href="/posts">Post</a></li>
         <li class="nav-item"><a class="nav-link" href="#">Profile</a></li>
       </ul>
     </div>
