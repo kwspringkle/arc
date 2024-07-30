@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from .models import PrivateChatRoom, GroupChatRoom, GroupMessage, PrivateMessage, Reply
 from django.contrib.auth.models import User
 from django.db.models import Q
+from django.contrib import messages
 import random
 
 
@@ -65,18 +66,19 @@ def create_private_chat(request):
         try:
             other_user = User.objects.get(username=other_username)
             if other_user != request.user:
-                chat_room, created = PrivateChatRoom.objects.get_or_create(
-                    member1=request.user,
-                    member2=other_user
-                )
-                if not created:
-                    chat_room, created = PrivateChatRoom.objects.get_or_create(
-                        member1=other_user,
-                        member2=request.user
-                    )
-                return redirect('private_chat_list')
+                existing_chat=PrivateChatRoom.objects.filter(
+                    Q(member1=request.user, member2=other_user) |
+                    Q(member1 = other_user, member2 = request.user)
+                ).first()
+
+                if existing_chat:
+                    messages.info(request, f"The chatroom already created")
+                    return redirect('send_private_message', chat_id =existing_chat.id)
+                else:
+                    PrivateChatRoom.objects.create(member1=request.user, member2=other_user)
+                    return redirect('private_chat_list')
         except User.DoesNotExist:
-            pass  # Handle user not found case if needed
+            pass
     return render(request, 'create_private_chat_demo.html')
 
 #Details of private chat
@@ -135,3 +137,4 @@ def reply_group_message(request, chat_id, message_id):
         )
         return redirect('group_chat_messages', chat_id=chat_id)
     return redirect('group_chat_list')
+
