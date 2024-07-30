@@ -5,16 +5,13 @@
     <title>Create Group Chat</title>
 </head>
 <body>
+    
     <h1>Create Group Chat</h1>
-    {% if error %}
-        <p style="color: red;">{{ error }}</p>
-    {% endif %}
     <form method="POST" action="{% url 'create_group_chat' %}">
         {% csrf_token %}
         <input type="text" name="group_name" placeholder="Group Name">
         <input type="text" name="members" placeholder="Usernames (comma separated)">
         <button type="submit">Create</button>
     </form>
-    <a href="/home">Back to home</a>
 </body>
 </html>

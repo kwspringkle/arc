@@ -36,7 +36,7 @@
                     </video>
                 {% endif %}
                 - {{ post.created_at }}
-                <form method="post" action="{% url 'postss:delete_post' post.id %}" style="display:inline;">
+                <form method="post" action="{% url 'posts:delete_post' post.id %}" style="display:inline;">
                     {% csrf_token %}
                     <button type="submit">Delete</button>
                 </form>

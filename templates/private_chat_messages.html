@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{chat_room.member1.username}},{{ chat_room.member2.username }} private chat</title>
+    <title>Private Chat with {{ chat_room.member2.username }}</title>
 </head>
 <body>
-    <h1>Private chat: {{chat_room.member1.username}}, {{ chat_room.member2.username }}</h1>
+    <h1>Private Chat with {{ chat_room.member2.username }}</h1>
     
     <div id="messages">
         {% for message in messages %}
@@ -31,6 +31,5 @@
     </form>
 
     <a href="{% url 'private_chat_list' %}">Back to Chat List</a>
-    <a href="/home">Back to Home</a>
 </body>
 </html>

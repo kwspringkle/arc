@@ -31,6 +31,7 @@ def logout_view (request):
 
 def render_home(request):
     return render(request, 'home.html')
+
 @login_required
 def render_main(request):
     return render(request, 'index.html')

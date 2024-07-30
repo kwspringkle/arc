@@ -15,7 +15,5 @@
             <a href ="{% url 'private_chat_messages' chat.id %}"><li>{{ chat.member1 }}, {{ chat.member2 }}</li></a>
         {% endfor %}
     </ul>
-    <button><a href ={% url 'create_private_chat' %}>Create private chat</a></button>
-    <a href="/home">Back to Home</a>
 </body>
 </html>
