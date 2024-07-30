@@ -1,15 +1,13 @@
 from django.shortcuts import render,redirect
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from .form import AddAnonMessageForm
 from .models import AnonMessage
 
 # Create your views here.
-def home(request):
-    return render(request, 'home.html')
+def base(request):
+    return render(request, 'base.html')
 
-@login_required
 def add_anon_message(request, pk):
     get_user = User.objects.get(pk=pk)
     if request.method == 'POST':
@@ -19,7 +17,7 @@ def add_anon_message(request, pk):
             var.user = get_user
             var.save()
             messages.info(request, f'Sent anonymous message to {get_user.first_name}')
-            return redirect('anonymous')
+            return redirect('base')
         else:
             messages.warning(request, 'Something went wrong')
             return redirect('add-anon-message')
