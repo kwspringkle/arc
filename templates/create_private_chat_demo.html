@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Private Chat</title>
+</head>
+<body>
+    <h1>Create Private Chat</h1>
+    <form method="POST" action="{% url 'create_private_chat' %}">
+        {% csrf_token %}
+        <input type="text" name="username" placeholder="Username">
+        <button type="submit">Create</button>
+    </form>
+</body>
+</html>

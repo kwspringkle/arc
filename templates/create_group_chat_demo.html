@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Group Chat</title>
+</head>
+<body>
+    
+    <h1>Create Group Chat</h1>
+    <form method="POST" action="{% url 'create_group_chat' %}">
+        {% csrf_token %}
+        <input type="text" name="group_name" placeholder="Group Name">
+        <input type="text" name="members" placeholder="Usernames (comma separated)">
+        <button type="submit">Create</button>
+    </form>
+</body>
+</html>
