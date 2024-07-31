@@ -4,8 +4,11 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
 from django.http.response import HttpResponseRedirect
 from django.views.generic import CreateView
+from django.views.generic.edit import UpdateView
 from django.urls import reverse_lazy
 from .forms import SignUpForm
+from .forms import ProfileForm
+from .models import Profile
 
 
 def custom_login_view(request):
@@ -27,6 +30,7 @@ def custom_login_view(request):
 
 @login_required
 def logout_view (request):
+    logout(request)
     return redirect('log:login_page')
 
 def render_home(request):
@@ -46,6 +50,30 @@ class SignUpView(CreateView):
 
     def form_valid(self, form):
         user = form.save()
+        Profile.objects.create(user=user)
         login(self.request, user)
         self.object = user
         return HttpResponseRedirect(self.get_success_url())
+
+@login_required
+def profile(request):
+    try:
+        profile = request.user.profile
+    except Profile.DoesNotExist:
+        profile = Profile.objects.create(user=request.user)
+    
+    return render(request, 'profile.html', {'user': request.user, 'profile': profile})
+
+@login_required
+def edit_profile(request):
+    profile = Profile.objects.get(user=request.user)
+    
+    if request.method == 'POST':
+        form = ProfileForm(request.POST, request.FILES, instance=profile)
+        if form.is_valid():
+            form.save()
+            return redirect('log:profile')
+    else:
+        form = ProfileForm(instance=profile)
+
+    return render(request, 'edit_profile.html', {'form': form})
