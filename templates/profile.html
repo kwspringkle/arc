@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Profile</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #a86dff, #ff66b2);
+            color: #333;
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+            padding-top: 56px; /* Adjusted for fixed-top navbar */
+        }
+        .navbar {
+            border-bottom: 1px solid #ddd;
+        }
+        .navbar-brand {
+            color: #6a1b9a !important;
+        }
+        .navbar-nav .nav-link {
+            color: #6a1b9a !important;
+        }
+        .navbar-light .navbar-nav .nav-link:hover {
+            color: #8e24aa !important;
+        }
+        .container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        .card {
+            border-radius: .5rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+        }
+        .card-body h6 {
+            font-weight: bold;
+        }
+        .text-white h5, .text-white p, .text-white i {
+            color: #fff !important;
+        }
+        .text-muted {
+            color: #000 !important;
+        }
+        .btn-primary {
+            background-color: #6a1b9a;
+            border-color: #6a1b9a;
+        }
+        .btn-primary:hover {
+            background-color: #8e24aa;
+            border-color: #8e24aa;
+        }
+        .btn-secondary {
+            background-color: #6a1b9a;
+            border-color: #6a1b9a;
+        }
+        .btn-secondary:hover {
+            background-color: #8e24aa;
+            border-color: #8e24aa;
+        }
+        .form-control {
+            border-radius: 50px;
+        }
+        .form-control:focus {
+            border-color: #6a1b9a;
+            box-shadow: 0 0 0 0.2rem rgba(106, 27, 154, 0.25);
+        }
+        footer {
+            background-color: #fff;
+            border-top: 1px solid #ddd;
+            padding: 1rem 0;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+        <a class="navbar-brand" href="/home">ARC</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item"><a class="nav-link" href="/home">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="/sys/logout">Logout</a></li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="chatDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Chat</a>
+                    <div class="dropdown-menu" aria-labelledby="chatDropdown">
+                        <a class="dropdown-item" href="/chat/group">Group Chat</a>
+                        <a class="dropdown-item" href="/chat/private">Private Chat</a>
+                    </div>
+                </li>
+                <li class="nav-item"><a class="nav-link" href="/posts">Post</a></li>
+                <li class="nav-item"><a class="nav-link" href="/profile">Profile</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container">
+        <h1 class="display-4 text-center">Edit Profile</h1>
+        <div class="card">
+            <div class="card-body">
+                <h6 class="card-title">Profile Information</h6>
+                {% if profile.avatar %}
+                    <p><img src="{{ profile.avatar.url }}" alt="Avatar" class="img-fluid" style="max-width: 150px;"></p>
+                {% else %}
+                    <p>No avatar uploaded.</p>
+                {% endif %}
+                <p><strong>Username:</strong> {{ user.username }}</p>
+                <p><strong>Email:</strong> {{ user.email }}</p>
+                <p><strong>Name:</strong> {{ profile.name }}</p>
+                <p><strong>Phone Number:</strong> {{ profile.phone_num }}</p>
+                <p><strong>Address:</strong> {{ profile.address }}</p>
+                <a href="{% url 'log:edit_profile' %}" class="btn btn-primary">Edit Profile</a>
+            </div>
+        </div>
+    </div>
+    <footer class="bg-light text-center mt-auto py-3">
+        <div class="container">
+            <p>&copy; All rights reserved.</p>
+        </div>
+    </footer>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
