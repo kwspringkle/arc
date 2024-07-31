@@ -191,3 +191,41 @@ def exit_group_chat(request, chat_id):
     
     return redirect('group_chat_list')
 
+@login_required
+def match_user(request):
+    # Step 1: Get all users excluding the current user
+    all_users = User.objects.exclude(id=request.user.id)
+    
+    # Step 2: Find users the current user has already chatted with
+    existing_chats = PrivateChatRoom.objects.filter(
+        Q(member1=request.user) | Q(member2=request.user)
+    )
+    chatted_with_users = User.objects.filter(
+        Q(id__in=existing_chats.values('member1')) | Q(id__in=existing_chats.values('member2'))
+    ).exclude(id=request.user.id)
+    
+    # Step 3: Get users the current user has not chatted with
+    not_chatted_with_users = all_users.exclude(id__in=chatted_with_users)
+    
+    # Step 4: Randomly select a user from the remaining ones
+    if not_chatted_with_users.exists():
+        random_user = random.choice(not_chatted_with_users)
+        # Check if a chat room already exists with the selected user
+        existing_chat = PrivateChatRoom.objects.filter(
+            Q(member1=request.user, member2=random_user) |
+            Q(member1=random_user, member2=request.user)
+        ).first()
+
+        if existing_chat:
+            messages.info(request, "You already have a chat with this user.")
+            return redirect('send_private_message', chat_id=existing_chat.id)
+        else:
+            new_chat = PrivateChatRoom.objects.create(member1=request.user, member2=random_user)
+            return redirect('private_chat_messages', chat_id=new_chat.id)
+    else:
+        messages.info(request, "No new users available for a random chat.")
+    
+    return redirect('private_chat_list')
+
+
+
