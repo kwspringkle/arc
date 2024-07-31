@@ -172,10 +172,12 @@
                         </video>
                     {% endif %}
                     <small class="text-muted">{{ post.created_at }}</small>
-                    <form method="post" action="{% url 'posts:delete_post' post.id %}" class="d-inline">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                    </form>
+                    {% if user == post.author %}
+                        <form method="post" action="{% url 'posts:delete_post' post.id %}" class="d-inline">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                        </form>
+                    {% endif %}
                 </li>
             {% endfor %}
         </ul>
