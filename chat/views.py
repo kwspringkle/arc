@@ -193,24 +193,19 @@ def exit_group_chat(request, chat_id):
 
 @login_required
 def match_user(request):
-    # Step 1: Get all users excluding the current user
     all_users = User.objects.exclude(id=request.user.id)
     
-    # Step 2: Find users the current user has already chatted with
     existing_chats = PrivateChatRoom.objects.filter(
         Q(member1=request.user) | Q(member2=request.user)
     )
     chatted_with_users = User.objects.filter(
         Q(id__in=existing_chats.values('member1')) | Q(id__in=existing_chats.values('member2'))
     ).exclude(id=request.user.id)
-    
-    # Step 3: Get users the current user has not chatted with
+
     not_chatted_with_users = all_users.exclude(id__in=chatted_with_users)
     
-    # Step 4: Randomly select a user from the remaining ones
     if not_chatted_with_users.exists():
         random_user = random.choice(not_chatted_with_users)
-        # Check if a chat room already exists with the selected user
         existing_chat = PrivateChatRoom.objects.filter(
             Q(member1=request.user, member2=random_user) |
             Q(member1=random_user, member2=request.user)
@@ -227,5 +222,32 @@ def match_user(request):
     
     return redirect('private_chat_list')
 
+@login_required
+def match_group(request):
+    all_users = User.objects.exclude(id=request.user.id)
 
+    existing_groups = GroupChatRoom.objects.filter(members=request.user)
 
+    chatted_with_users = User.objects.filter(
+        Q(id__in=existing_groups.values('members'))
+    ).exclude(id=request.user.id)
+
+    not_chatted_with_users = all_users.exclude(id__in=chatted_with_users)
+
+    # Group of 4 user, if not chatted members > 2 --> match
+    group_size = 4
+    required_members = group_size - 2
+
+    if not_chatted_with_users.count() >= required_members:
+        
+        new_members = random.sample(list(not_chatted_with_users), required_members)
+        
+        group_name = "Random Group Chat" 
+        group_chat = GroupChatRoom.objects.create(name=group_name)
+        group_chat.members.add(request.user)
+        group_chat.members.add(*new_members)
+        
+        return redirect('group_chat_messages', chat_id=group_chat.id)
+    else:
+        messages.info(request, "Not enough new users available to form a group.")
+        return redirect('group_chat_list')
