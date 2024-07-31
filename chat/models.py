@@ -47,5 +47,6 @@ class Reply(models.Model):
     img_file = models.FileField(upload_to='group_chat_files/', null=True, blank=True)
     def __str__(self):
         return f"Reply by {self.sender} at {self.timestamp}: {self.content[:10]}"
+    
 
 
