@@ -1,7 +1,7 @@
 from django.urls import path
 from django.shortcuts import redirect
 from .views import PrivateChatList, GroupChatList, SearchPrivateChat, SearchGroupChat, create_group_chat, create_private_chat, show_group_messages, show_private_messages
-from .views import send_group_message, send_private_message, reply_group_message
+from .views import send_group_message, send_private_message, reply_group_message, add_member_to_group_chat, exit_group_chat
 
 urlpatterns = [
     path('', lambda request: redirect('private_chat_list'), name='chat_home'),
@@ -16,4 +16,7 @@ urlpatterns = [
     path('private-chat/<int:chat_id>/send/', send_private_message, name='send_private_message'),
     path('group-chat/<int:chat_id>/send/', send_group_message, name='send_group_message'),
     path('group-chat/<int:chat_id>/reply/<int:message_id>/', reply_group_message, name='reply_group_message'),
+    path('group-chat/<int:chat_id>/add-member/', add_member_to_group_chat, name='add_member_to_group_chat'),
+    path('group-chat/<int:chat_id>/exit/', exit_group_chat, name='exit_group_chat'),
+
 ]
