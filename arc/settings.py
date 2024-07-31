@@ -76,8 +76,9 @@ WSGI_APPLICATION = 'arc.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-import os
-import sys
+
+
+from django.core.management import execute_from_command_line
 
 if 'vercel' in os.environ:
     BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -90,6 +91,8 @@ if 'vercel' in os.environ:
             'NAME': os.path.join(TMP_DIR, 'db.sqlite3'),
         }
     }
+    if not os.path.exists(os.path.join(TMP_DIR, 'db.sqlite3')):
+        execute_from_command_line(['manage.py', 'migrate'])  # Ensure migrations are applied
 else:
     BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     DATABASES = {
@@ -98,7 +101,6 @@ else:
             'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         }
     }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
