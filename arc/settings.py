@@ -76,15 +76,22 @@ WSGI_APPLICATION = 'arc.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+import os
+import sys
+
 if 'vercel' in os.environ:
     BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    TMP_DIR = '/tmp'
+    if not os.path.exists(TMP_DIR):
+        os.makedirs(TMP_DIR)
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': os.path.join('/tmp', 'db.sqlite3'),
+            'NAME': os.path.join(TMP_DIR, 'db.sqlite3'),
         }
     }
 else:
+    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
