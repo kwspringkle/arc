@@ -1,18 +1,98 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
     <title>Confirm Delete</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #a86dff, #ff66b2);
+            color: #333;
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+            padding-top: 56px; /* Adjusted for fixed-top navbar */
+        }
+        .navbar {
+            border-bottom: 1px solid #ddd;
+        }
+        .navbar-brand {
+            color: #6a1b9a !important;
+        }
+        .navbar-nav .nav-link {
+            color: #6a1b9a !important;
+        }
+        .navbar-light .navbar-nav .nav-link:hover {
+            color: #8e24aa !important;
+        }
+        .container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        h1 {
+            color: #fff;
+            margin-bottom: 20px;
+        }
+        .btn-primary {
+            background-color: #6a1b9a;
+            border-color: #6a1b9a;
+        }
+        .btn-primary:hover {
+            background-color: #8e24aa;
+            border-color: #8e24aa;
+        }
+        .btn-secondary {
+            background-color: #6a1b9a;
+            border-color: #6a1b9a;
+        }
+        .btn-secondary:hover {
+            background-color: #8e24aa;
+            border-color: #8e24aa;
+        }
+    </style>
 </head>
 <body>
-    <h1>Are you sure you want to delete this post?</h1>
-    <p>{{ post.content }}</p>
-    {% if post.image %}
-        <img src="{{ post.image.url }}" alt="Image" style="max-width: 200px; max-height: 200px;">
-    {% endif %}
-    <form method="post">
-        {% csrf_token %}
-        <button type="submit">Yes, delete</button>
-    </form>
-    <a href="{% url 'posts:index' %}">Cancel</a>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+        <a class="navbar-brand" href="/home">ARC</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item"><a class="nav-link" href="/home">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="/sys/logout">Logout</a></li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="chatDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Chat</a>
+                    <div class="dropdown-menu" aria-labelledby="chatDropdown">
+                        <a class="dropdown-item" href="/chat/group">Group Chat</a>
+                        <a class="dropdown-item" href="/chat/private">Private Chat</a>
+                    </div>
+                </li>
+                <li class="nav-item"><a class="nav-link" href="/posts">Post</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Profile</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container">
+        <h1 class="display-4 text-center">Confirm Delete</h1>
+        <div class="alert alert-warning">
+            <p>Are you sure you want to delete the post titled "{{ post.title }}"?</p>
+            <form method="post" action="{% url 'posts:delete_post' post.id %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">Confirm Delete</button>
+                <a href="{% url 'posts:index' %}" class="btn btn-secondary">Cancel</a>
+            </form>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

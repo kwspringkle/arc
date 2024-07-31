@@ -5,21 +5,116 @@
     <title>Posts</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #a86dff, #ff66b2);
+            color: #333;
+        }
         body {
             display: flex;
             flex-direction: column;
-            min-height: 100vh;
-            margin: 0;
             padding-top: 56px; /* Adjusted for fixed-top navbar */
+        }
+        .navbar {
+            border-bottom: 1px solid #ddd;
+        }
+        .navbar-brand {
+            color: #6a1b9a !important;
+        }
+        .navbar-nav .nav-link {
+            color: #6a1b9a !important;
+        }
+        .navbar-light .navbar-nav .nav-link:hover {
+            color: #8e24aa !important;
         }
         .container {
             flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        h1 {
+            color: #fff;
+            margin-bottom: 20px;
+        }
+        .btn-primary {
+            background-color: #6a1b9a;
+            border-color: #6a1b9a;
+        }
+        .btn-primary:hover {
+            background-color: #8e24aa;
+            border-color: #8e24aa;
+        }
+        .btn-secondary {
+            background-color: #6a1b9a;
+            border-color: #6a1b9a;
+        }
+        .btn-secondary:hover {
+            background-color: #8e24aa;
+            border-color: #8e24aa;
+        }
+        .form-control {
+            border-radius: 50px;
+        }
+        .form-control:focus {
+            border-color: #6a1b9a;
+            box-shadow: 0 0 0 0.2rem rgba(106, 27, 154, 0.25);
+        }
+        .list-group-item {
+            border-radius: 10px;
+            background-color: #fff;
+            color: #000;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+            padding: 15px;
+            position: relative;
+        }
+        .list-group-item img, .list-group-item video {
+            max-width: 100%;
+            border-radius: 8px;
+            margin-top: 10px;
+            height: auto;
+        }
+        .list-group-item small {
+            display: block;
+            margin-top: 10px;
+            color: #888;
+        }
+        .list-group-item .btn-danger {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
         }
         footer {
-            background-color: #ffffff;
+            background-color: #fff;
             border-top: 1px solid #ddd;
-            padding: 3rem 0;
+            padding: 1rem 0;
             text-align: center;
+        }
+        .form-container {
+            display: flex;
+            flex-direction: column;
+            width: 75%;
+        }
+        .form-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        .form-row .form-group {
+            margin-right: 10px;
+            flex: 1;
+        }
+        .form-row .form-group:last-child {
+            margin-right: 0;
+        }
+        .form-row .btn {
+            margin-top: 0;
+        }
+        .form-row .btn-secondary {
+            margin-left: 10px;
         }
     </style>
 </head>
@@ -45,21 +140,22 @@
             </ul>
         </div>
     </nav>
-    <div class="container d-flex flex-column align-items-center justify-content-center">
+    <div class="container">
         <h1 class="display-4 text-center">Posts & Views</h1>
-        <nav class="my-4">
-            <a href="{% url 'log:home_page' %}" class="btn btn-primary">Home</a>
-        </nav>
-        <form method="get" action="" class="mb-4 w-75">
-            {{ search_form.as_p }}
-            <button type="submit" class="btn btn-primary">Search</button>
-            <a href="{% url 'posts:index' %}" class="btn btn-secondary">Reset</a>
-        </form>
-        <form method="post" enctype="multipart/form-data" class="mb-4 w-75">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" class="btn btn-primary">Post</button>
-        </form>
+        <div class="form-container">
+            <div class="form-row">
+                <form method="get" action="" class="form-group">
+                    {{ search_form.as_p }}
+                </form>
+                <button type="submit" class="btn btn-primary">Search</button>
+                <a href="{% url 'posts:index' %}" class="btn btn-secondary">Reset</a>
+            </div>
+            <form method="post" enctype="multipart/form-data" class="form-group">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary">Post</button>
+            </form>
+        </div>
         <ul class="list-group w-75">
             {% for post in posts %}
                 <li class="list-group-item mb-3">

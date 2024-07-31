@@ -7,4 +7,4 @@ class PostForm(forms.ModelForm):
         fields = ['content', 'image', 'video']
 
 class SearchForm(forms.Form):
-    query = forms.CharField(label='Search', max_length=100)
+    query = forms.CharField(label='Search', max_length=100, required=False)
