@@ -23,4 +23,4 @@ def delete_post(request, post_id):
     if request.method == "POST":
         post.delete()
         return redirect('posts:index')
-    return render(request, 'posts/confirm_delete.html', {'post': post})
+    return render(request, 'posts/delete_post.html', {'post': post})
