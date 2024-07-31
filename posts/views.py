@@ -9,18 +9,22 @@ def index(request):
         query = search_form.cleaned_data['query']
         if query:
             posts = posts.filter(content__icontains=query)
+    
     if request.method == "POST":
         form = PostForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
+            post = form.save(commit=False)
+            post.author = request.user 
+            post.save()
             return redirect('posts:index')
     else:
         form = PostForm()
+    
     return render(request, 'posts/index.html', {'posts': posts, 'form': form, 'search_form': search_form})
 
 def delete_post(request, post_id):
-    post = get_object_or_404(Post, id=post_id)
+    post = get_object_or_404(Post, id=post_id, author=request.user)
     if request.method == "POST":
         post.delete()
         return redirect('posts:index')
-    return render(request, 'posts/delete_post.html', {'post': post})
+    return render(request, 'posts/confirm_delete.html', {'post': post})

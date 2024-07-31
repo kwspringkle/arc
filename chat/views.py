@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.db.models import Q
 from django.contrib import messages
 import random
+import uuid
 
 @login_required
 def PrivateChatList(request):
@@ -242,7 +243,7 @@ def match_group(request):
         
         new_members = random.sample(list(not_chatted_with_users), required_members)
         
-        group_name = "Random Group Chat" 
+        group_name = f"Random Group Chat {uuid.uuid4().hex[:8]}"
         group_chat = GroupChatRoom.objects.create(name=group_name)
         group_chat.members.add(request.user)
         group_chat.members.add(*new_members)
