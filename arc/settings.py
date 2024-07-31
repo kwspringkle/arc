@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-$=nm0rj@_i$zb0#gckq!581&^8sst_q#0b4%2!t3m48#@fu13h
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['.vercel.app']
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -76,31 +76,13 @@ WSGI_APPLICATION = 'arc.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-
-
-from django.core.management import execute_from_command_line
-
-if 'vercel' in os.environ:
-    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    TMP_DIR = '/tmp'
-    if not os.path.exists(TMP_DIR):
-        os.makedirs(TMP_DIR)
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': os.path.join(TMP_DIR, 'db.sqlite3'),
-        }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
-    if not os.path.exists(os.path.join(TMP_DIR, 'db.sqlite3')):
-        execute_from_command_line(['manage.py', 'migrate'])  # Ensure migrations are applied
-else:
-    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-        }
-    }
+}
+
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
